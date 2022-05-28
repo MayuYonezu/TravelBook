@@ -8,6 +8,7 @@
 import Foundation
 import RealmSwift
 
+// データベースの箱
 class Plan: Object {
     @objc dynamic var planText: String = ""
 }
