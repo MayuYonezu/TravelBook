@@ -16,6 +16,11 @@
 		033BD0CA283A256100F418B9 /* TravelBookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0C9283A256100F418B9 /* TravelBookTests.swift */; };
 		033BD0D4283A256100F418B9 /* TravelBookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0D3283A256100F418B9 /* TravelBookUITests.swift */; };
 		033BD0D6283A256100F418B9 /* TravelBookUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0D5283A256100F418B9 /* TravelBookUITestsLaunchTests.swift */; };
+		033BD0E3283A29DF00F418B9 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0E2283A29DF00F418B9 /* EditViewController.swift */; };
+		033BD0E5283A2ADB00F418B9 /* LookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0E4283A2ADB00F418B9 /* LookViewController.swift */; };
+		033BD0E72841F9AB00F418B9 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0E62841F9AA00F418B9 /* ListTableViewCell.swift */; };
+		033BD0EA2841FBFE00F418B9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 033BD0E92841FBFE00F418B9 /* Realm */; };
+		033BD0EC2841FBFE00F418B9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 033BD0EB2841FBFE00F418B9 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +54,9 @@
 		033BD0CF283A256100F418B9 /* TravelBookUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelBookUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		033BD0D3283A256100F418B9 /* TravelBookUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelBookUITests.swift; sourceTree = "<group>"; };
 		033BD0D5283A256100F418B9 /* TravelBookUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelBookUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		033BD0E2283A29DF00F418B9 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		033BD0E4283A2ADB00F418B9 /* LookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookViewController.swift; sourceTree = "<group>"; };
+		033BD0E62841F9AA00F418B9 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				033BD0EC2841FBFE00F418B9 /* RealmSwift in Frameworks */,
+				033BD0EA2841FBFE00F418B9 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +112,9 @@
 				033BD0B2283A256000F418B9 /* AppDelegate.swift */,
 				033BD0B4283A256000F418B9 /* SceneDelegate.swift */,
 				033BD0B6283A256000F418B9 /* ViewController.swift */,
+				033BD0E2283A29DF00F418B9 /* EditViewController.swift */,
+				033BD0E4283A2ADB00F418B9 /* LookViewController.swift */,
+				033BD0E62841F9AA00F418B9 /* ListTableViewCell.swift */,
 				033BD0B8283A256000F418B9 /* Main.storyboard */,
 				033BD0BB283A256100F418B9 /* Assets.xcassets */,
 				033BD0BD283A256100F418B9 /* LaunchScreen.storyboard */,
@@ -143,6 +156,10 @@
 			dependencies = (
 			);
 			name = TravelBook;
+			packageProductDependencies = (
+				033BD0E92841FBFE00F418B9 /* Realm */,
+				033BD0EB2841FBFE00F418B9 /* RealmSwift */,
+			);
 			productName = TravelBook;
 			productReference = 033BD0AF283A256000F418B9 /* TravelBook.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +232,9 @@
 				Base,
 			);
 			mainGroup = 033BD0A6283A256000F418B9;
+			packageReferences = (
+				033BD0E82841FBFE00F418B9 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 033BD0B0283A256000F418B9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -258,9 +278,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				033BD0E3283A29DF00F418B9 /* EditViewController.swift in Sources */,
 				033BD0B7283A256000F418B9 /* ViewController.swift in Sources */,
 				033BD0B3283A256000F418B9 /* AppDelegate.swift in Sources */,
+				033BD0E5283A2ADB00F418B9 /* LookViewController.swift in Sources */,
 				033BD0B5283A256000F418B9 /* SceneDelegate.swift in Sources */,
+				033BD0E72841F9AB00F418B9 /* ListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +625,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		033BD0E82841FBFE00F418B9 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		033BD0E92841FBFE00F418B9 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 033BD0E82841FBFE00F418B9 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		033BD0EB2841FBFE00F418B9 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 033BD0E82841FBFE00F418B9 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 033BD0A7283A256000F418B9 /* Project object */;
 }
