@@ -8,6 +8,8 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
+    
+    @IBOutlet var planLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -6,15 +6,19 @@
 //
 
 import UIKit
+import RealmSwift
 
 class EditViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    //パーツ宣言---------------------------------------------
     // CVで企画選択時のボタンの背景画像
     @IBOutlet var titeImage: UIImageView!
     // 行く日程
     @IBOutlet weak var StartDayPicker: UIDatePicker!
     // 帰る日程
     @IBOutlet weak var FinishDayPicker: UIDatePicker!
+    //スケジュールを表示させるためのTebleView
+    @IBOutlet var tableView: UITableView!
     // 企画のタイトルを入れるためのTextField
     @IBOutlet var titleName: UITextField!
     // ミッションを表示させるためのLabel
@@ -30,18 +34,35 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     // 予定の終わりの時間
     @IBOutlet weak var FinishTimePicker: UIDatePicker!
     // 予定を追加するためのButton
-    @IBOutlet var addBtn: UIButton!
+    //@IBOutlet var addBtn: UIButton!
     
+    //ミッション-------------------------------------------
     // ミッションが入ったArray
     let missionArray = ["映えな写真を撮る","おしゃれなVlogを撮る","ストーリーを1日10個載せる","YouTuber風な動画を撮って編集","面白写真を撮る"]
     // pickerViewの要素（仮で1~7日までにする->もし可能であれば必要な日程数のみにする）
     let DaysArray = ["1","2","3","4","5","6","7"]
     
+    //Realm-----------------------------------------------
+    let realm = try! Realm()
+    var plans = [Plan]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Navigation装飾
+        navigation()
+        // 一番初めに表示されるmission
+        mission_random()
+        
+        // Delegate設定
+        pickerView.delegate = self
+        pickerView.dataSource = self
+
+    }
+    
+    // NavigationBar装飾
+    func navigation(){
         let appearance = UINavigationBarAppearance()
         
-        // NavigationBar装飾
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(red: 242/255.0, green: 167/255.0, blue: 167/255.0, alpha: 1.0)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.lightText]
@@ -51,13 +72,6 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
         
-        // 一番初めに表示されるmission
-        mission_random()
-        
-        // Delegate設定
-        pickerView.delegate = self
-        pickerView.dataSource = self
-
     }
     
     // アルバムを開くためのアクション
@@ -115,8 +129,32 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
             //label.text = dataList[row]
         }
     
+    // 予定を追加をタップされたとき
+    @IBAction func addBtn(){
+        guard let _ = detailTextFiled.text else {return}
+        
+        savePlan()
+        self.dismiss(animated: true)
+    }
     
+    // 予定を保存
+    func savePlan(){
+        guard let planText = detailTextFiled.text else { return }
+        
+        let plan = Plan()
+        plan.planText = planText
+        
+        try! realm.write({
+            realm.add(plan) // レコードを追加
+        })
+
+    }
     
+    // Realmからデータを取得してテーブルビューを再リロードするメソッド
+    func getPlanData() {
+        plans = Array(realm.objects(Plan.self)).reversed()  // Realm DBから保存されてるツイートを全取得
+        tableView.reloadData() // テーブルビューをリロード
+    }
     // 初日から最終日までの期間を計算させる
     //その期間をDayPickerに表示させる
 
