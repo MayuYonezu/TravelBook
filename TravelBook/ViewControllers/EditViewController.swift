@@ -63,6 +63,11 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         
         let planData = realm.objects(Plan.self)
         print("🟥全てのデータ\(planData)")
+        
+        // realm初期化
+        try! realm.write {
+            realm.deleteAll()
+        }
 
     }
     
@@ -78,6 +83,8 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
+        
+        getPlanData()
         
     }
     
@@ -144,6 +151,7 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         
         // detailTextFieldを初期化する
         detailTextFiled.text = ""
+        tableView.reloadData()
         print("保存")
     }
     
@@ -182,7 +190,12 @@ extension EditViewController: UITableViewDelegate, UITableViewDataSource{
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let planData = realm.objects(Plan.self)
         //cell.textLabel!.text = "\(planData[indexPath.row].name)さん"
-        cell.textLabel!.text = String("\(planData[indexPath.row].planText)")
+        //ユーザーラベルオブジェクトを作る
+        let DetailLabel = cell.viewWithTag(3) as! UILabel
+        //ユーザーラベルに表示する文字列を設定
+        DetailLabel.text = "\(planData[indexPath.row].planText)"
+        
+        //cell.textLabel!.text = String("\(planData[indexPath.row].planText)")
         return cell
     }
 }
