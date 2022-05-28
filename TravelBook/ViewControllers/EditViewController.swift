@@ -56,6 +56,10 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         // Delegate設定
         pickerView.delegate = self
         pickerView.dataSource = self
+        
+        // TableViewの初期設定
+        tableView.delegate = self
+        tableView.dataSource = self
 
     }
     
@@ -129,12 +133,15 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
             //label.text = dataList[row]
         }
     
-    // 予定を追加をタップされたとき
+    // "予定を追加"をタップされたとき
     @IBAction func addBtn(){
         guard let _ = detailTextFiled.text else {return}
         
         savePlan()
-        self.dismiss(animated: true)
+        
+        // detailTextFieldを初期化する
+        detailTextFiled.text = ""
+        print("保存")
     }
     
     // 予定を保存
@@ -147,15 +154,34 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         try! realm.write({
             realm.add(plan) // レコードを追加
         })
+        print(plan)
 
     }
     
     // Realmからデータを取得してテーブルビューを再リロードするメソッド
     func getPlanData() {
-        plans = Array(realm.objects(Plan.self)).reversed()  // Realm DBから保存されてるツイートを全取得
+        plans = Array(realm.objects(Plan.self)).reversed()  // Realm DBから保存されてる予定を全取得
         tableView.reloadData() // テーブルビューをリロード
     }
     // 初日から最終日までの期間を計算させる
     //その期間をDayPickerに表示させる
 
+}
+
+extension EditViewController: UITableViewDelegate, UITableViewDataSource{
+    // TableViewが何個のCellを表示するのか設定するデリゲートメソッド
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        plans.count
+    }
+    // Cellの中身を設定するデリゲートメソッド
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlanCell", for: indexPath)
+        guard let planLabel = cell.viewWithTag(8) as? UILabel else { return cell }
+              //let planImageView = cell.viewWithTag(4) as? UIImageView else { return cell }
+        
+        let plan = plans[indexPath.row]
+        planLabel.text = plan.planText
+        
+        return cell
+    }
 }
