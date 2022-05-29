@@ -30,9 +30,11 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     // 予定の詳細を書くためTextField
     @IBOutlet var detailTextFiled: UITextField!
     // 予定の始まる時間
-    @IBOutlet weak var StartTimePicker: UIDatePicker!
+    //@IBOutlet weak var StartTimePicker: UIDatePicker!
+    @IBOutlet var StartTimeTextField: UITextField!
     // 予定の終わりの時間
-    @IBOutlet weak var FinishTimePicker: UIDatePicker!
+    //@IBOutlet weak var FinishTimePicker: UIDatePicker!
+    @IBOutlet var FinishTimeTextField: UITextField!
     // 予定を追加するためのButton
     //@IBOutlet var addBtn: UIButton!
     
@@ -64,12 +66,65 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         let planData = realm.objects(Plan.self)
         print("🟥全てのデータ\(planData)")
         
+        StartTimeTextField.placeholder = "Start"
+        FinishTimeTextField.placeholder = "End"
+        
         // realm初期化
         try! realm.write {
             realm.deleteAll()
         }
+        
+        StartTimeTextField.delegate = self
+        FinishTimeTextField.delegate = self
+        //キーボードをtimePickerに変更
+        StartTimeTextField.inputView = timePicker
+        FinishTimeTextField.inputView = timePicker1
 
     }
+    
+    
+    
+    
+    //UIDatePickerをインスタンス化（同じこと2回書いてるから後で一つにまとめる）
+    let timePicker: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = UIDatePicker.Mode.time
+        dp.timeZone = NSTimeZone.local
+        //時間をJapanese(24時間表記)に変更
+        dp.locale = Locale.init(identifier: "ja_JP")
+        dp.timeZone = TimeZone(identifier:  "Asia/Tokyo")
+        dp.addTarget(self, action: #selector(dateChange), for: .valueChanged)
+        //最小単位（分）を設定
+        dp.minuteInterval = 10
+        return dp
+    }()
+    @objc func dateChange(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        StartTimeTextField.text = "\(formatter.string(from: timePicker.date))"
+        }
+    
+    let timePicker1: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = UIDatePicker.Mode.time
+        dp.timeZone = NSTimeZone.local
+        //時間をJapanese(24時間表記)に変更
+        dp.locale = Locale.init(identifier: "ja_JP")
+        dp.timeZone = TimeZone(identifier:  "Asia/Tokyo")
+        dp.addTarget(self, action: #selector(dateChange1), for: .valueChanged)
+        //最小単位（分）を設定
+        dp.minuteInterval = 10
+        return dp
+    }()
+    @objc func dateChange1(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        FinishTimeTextField.text = "\(formatter.string(from: timePicker1.date))"
+        }
+    
+    
+    
+    
     
     // NavigationBar装飾
     func navigation(){
@@ -145,22 +200,30 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     
     // "予定を追加"をタップされたとき
     @IBAction func addBtn(){
-        guard let _ = detailTextFiled.text else {return}
+        guard let _ = detailTextFiled.text,
+        let _ = StartTimeTextField.text,
+        let _ = FinishTimeTextField.text else {return}
         
         savePlan()
         
         // detailTextFieldを初期化する
         detailTextFiled.text = ""
+        StartTimeTextField.text = ""
+        FinishTimeTextField.text = ""
         tableView.reloadData()
         print("保存")
     }
     
     // 予定を保存
     func savePlan(){
-        guard let planText = detailTextFiled.text else { return }
+        guard let planText = detailTextFiled.text,
+        let startText = StartTimeTextField.text,
+        let finishText = FinishTimeTextField.text else { return }
         
         let plan = Plan()
         plan.planText = planText
+        plan.startTime = startText
+        plan.finishTime = finishText
         
         try! realm.write({
             realm.add(plan) // レコードを追加
@@ -192,8 +255,12 @@ extension EditViewController: UITableViewDelegate, UITableViewDataSource{
         //cell.textLabel!.text = "\(planData[indexPath.row].name)さん"
         //ユーザーラベルオブジェクトを作る
         let DetailLabel = cell.viewWithTag(3) as! UILabel
+        let StartLabel = cell.viewWithTag(1) as! UILabel
+        let FinishLabel = cell.viewWithTag(2) as! UILabel
         //ユーザーラベルに表示する文字列を設定
         DetailLabel.text = "\(planData[indexPath.row].planText)"
+        StartLabel.text = "\(planData[indexPath.row].startTime)"
+        FinishLabel.text = "\(planData[indexPath.row].finishTime)"
         
         //cell.textLabel!.text = String("\(planData[indexPath.row].planText)")
         return cell
