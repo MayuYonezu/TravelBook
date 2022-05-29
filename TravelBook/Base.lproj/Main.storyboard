@@ -215,18 +215,6 @@
                                     <action selector="addBtn" destination="R4b-fA-sGy" eventType="touchUpInside" id="Ne1-mv-jHG"/>
                                 </connections>
                             </button>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="dXI-k3-vD8">
-                                <rect key="frame" x="137" y="184" width="100" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.94901960780000005" green="0.65490196079999996" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <locale key="locale" localeIdentifier="ja_JP"/>
-                            </datePicker>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="AXm-SY-ho5">
-                                <rect key="frame" x="283" y="184" width="100" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.94901960780000005" green="0.65490196079999996" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <locale key="locale" localeIdentifier="ja_JP"/>
-                            </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Cb-4K-nH6">
                                 <rect key="frame" x="27" y="137" width="88" height="88"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -252,23 +240,35 @@
                                 <attributedString key="attributedText"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TsZ-Lm-Ruv">
+                                <rect key="frame" x="137" y="182" width="107" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="188-SW-XA7">
+                                <rect key="frame" x="276" y="182" width="107" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2NN-dz-V5L"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="fzf-az-rW0">
                         <barButtonItem key="backBarButtonItem" title="Cancel" id="NK1-1M-NTK"/>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="W9a-qe-GCa">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="VJ1-d1-MMZ">
                             <connections>
-                                <segue destination="m9Z-gB-CEW" kind="show" id="UtK-BX-E4Y"/>
+                                <action selector="ProjectSaveButton" destination="R4b-fA-sGy" id="L9K-xE-MpX"/>
+                                <segue destination="m9Z-gB-CEW" kind="show" id="bvi-xE-UBo"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="FinishDayPicker" destination="AXm-SY-ho5" id="3W6-0a-ayc"/>
+                        <outlet property="FinishDaysTextField" destination="188-SW-XA7" id="bTw-Zz-h4B"/>
                         <outlet property="FinishTimeTextField" destination="ZnK-Nd-CeX" id="8jv-8U-ceg"/>
-                        <outlet property="StartDayPicker" destination="dXI-k3-vD8" id="65f-J2-FGf"/>
+                        <outlet property="StartDaysTextField" destination="TsZ-Lm-Ruv" id="neo-vF-w29"/>
                         <outlet property="StartTimeTextField" destination="Cdp-8V-ODw" id="Llf-QZ-hsd"/>
                         <outlet property="detailTextFiled" destination="so2-EO-jFL" id="utv-ei-AEm"/>
                         <outlet property="missionLabel" destination="D5S-bN-SRe" id="M7s-b5-XE0"/>

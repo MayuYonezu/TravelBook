@@ -14,9 +14,11 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     // CVで企画選択時のボタンの背景画像
     @IBOutlet var titeImage: UIImageView!
     // 行く日程
-    @IBOutlet weak var StartDayPicker: UIDatePicker!
+    //@IBOutlet weak var StartDayPicker: UIDatePicker!
+    @IBOutlet var StartDaysTextField: UITextField!
     // 帰る日程
-    @IBOutlet weak var FinishDayPicker: UIDatePicker!
+    //@IBOutlet weak var FinishDayPicker: UIDatePicker!
+    @IBOutlet var FinishDaysTextField: UITextField!
     //スケジュールを表示させるためのTebleView
     @IBOutlet var tableView: UITableView!
     // 企画のタイトルを入れるためのTextField
@@ -38,6 +40,8 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     // 予定を追加するためのButton
     //@IBOutlet var addBtn: UIButton!
     
+    var saveButtonItem: UIBarButtonItem!
+    
     //ミッション-------------------------------------------
     // ミッションが入ったArray
     let missionArray = ["映えな写真を撮る","おしゃれなVlogを撮る","ストーリーを1日10個載せる","YouTuber風な動画を撮って編集","面白写真を撮る"]
@@ -52,6 +56,9 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         super.viewDidLoad()
         // Navigation装飾
         navigation()
+        
+        saveButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonPressed(_:)))
+        self.navigationItem.rightBarButtonItem = saveButtonItem
         // 一番初めに表示されるmission
         mission_random()
         
@@ -66,6 +73,10 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         let planData = realm.objects(Plan.self)
         print("🟥全てのデータ\(planData)")
         
+        
+        // 最初に書いてある薄い文字
+        StartDaysTextField.placeholder = "StartDays"
+        FinishDaysTextField.placeholder = "EndDays"
         StartTimeTextField.placeholder = "Start"
         FinishTimeTextField.placeholder = "End"
         
@@ -73,10 +84,13 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         try! realm.write {
             realm.deleteAll()
         }
-        
+        StartDaysTextField.delegate = self
+        FinishDaysTextField.delegate = self
         StartTimeTextField.delegate = self
         FinishTimeTextField.delegate = self
         //キーボードをtimePickerに変更
+        StartDaysTextField.inputView = timePicker2
+        FinishDaysTextField.inputView = timePicker3
         StartTimeTextField.inputView = timePicker
         FinishTimeTextField.inputView = timePicker1
 
@@ -122,8 +136,83 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         FinishTimeTextField.text = "\(formatter.string(from: timePicker1.date))"
         }
     
+    let timePicker2: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = UIDatePicker.Mode.date
+        dp.timeZone = NSTimeZone.local
+        //時間をJapanese(24時間表記)に変更
+        dp.locale = Locale.init(identifier: "ja_JP")
+        dp.timeZone = TimeZone(identifier:  "Asia/Tokyo")
+        dp.addTarget(self, action: #selector(dateChange2), for: .valueChanged)
+        //最小単位（分）を設定
+        dp.minuteInterval = 10
+        return dp
+    }()
+    @objc func dateChange2(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        StartDaysTextField.text = "\(formatter.string(from: timePicker2.date))"
+        }
+    
+    let timePicker3: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = UIDatePicker.Mode.date
+        dp.timeZone = NSTimeZone.local
+        //時間をJapanese(24時間表記)に変更
+        dp.locale = Locale.init(identifier: "ja_JP")
+        dp.timeZone = TimeZone(identifier:  "Asia/Tokyo")
+        dp.addTarget(self, action: #selector(dateChange3), for: .valueChanged)
+        //最小単位（分）を設定
+        dp.minuteInterval = 10
+        return dp
+    }()
+    @objc func dateChange3(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        FinishDaysTextField.text = "\(formatter.string(from: timePicker3.date))"
+        }
     
     
+    @objc func saveButtonPressed(_ sender: UIBarButtonItem){
+        
+        guard let _ = titleName.text,
+        let _ = StartDaysTextField.text,
+        let _ = FinishDaysTextField.text,
+        let _ = missionLabel.text else {return}
+        
+        saveProject()
+        
+        // detailTextFieldを初期化する
+        titleName.text = ""
+        StartDaysTextField.text = ""
+        FinishDaysTextField.text = ""
+        missionLabel.text = ""
+        
+        print("プロジェクト保存")
+        print(Project())
+        
+        
+    }
+    
+    // 企画を保存
+    func saveProject(){
+        guard let titleText = titleName.text,
+        let startDayText = StartDaysTextField.text,
+        let finishDayText = FinishDaysTextField.text,
+        let missionText = missionLabel.text else { return }
+        
+        let project = Project()
+        project.title = titleText
+        project.startDays = startDayText
+        project.finishDays = finishDayText
+        project.mission = missionText
+        
+        try! realm.write({
+            realm.add(project) // レコードを追加
+        })
+        print(project)
+
+    }
     
     
     // NavigationBar装飾

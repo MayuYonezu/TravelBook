@@ -27,6 +27,8 @@ class LookViewController: UIViewController {
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
+        
+        print(Project())
 
         // Do any additional setup after loading the view.
     }

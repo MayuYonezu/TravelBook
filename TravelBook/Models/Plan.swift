@@ -10,6 +10,7 @@ import RealmSwift
 
 // データベースの箱
 class Plan: Object {
+    @objc dynamic var planDay: String = ""
     @objc dynamic var planText: String = ""
     @objc dynamic var startTime: String = ""
     @objc dynamic var finishTime: String = ""
