@@ -20,7 +20,6 @@
 		033BD0E5283A2ADB00F418B9 /* LookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0E4283A2ADB00F418B9 /* LookViewController.swift */; };
 		033BD0EA2841FBFE00F418B9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 033BD0E92841FBFE00F418B9 /* Realm */; };
 		033BD0EC2841FBFE00F418B9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 033BD0EB2841FBFE00F418B9 /* RealmSwift */; };
-		033BD0F0284234D600F418B9 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD0EF284234D600F418B9 /* Plan.swift */; };
 		033BD1AD28431BBE00F418B9 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BD1AC28431BBE00F418B9 /* Project.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,7 +56,6 @@
 		033BD0D5283A256100F418B9 /* TravelBookUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelBookUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		033BD0E2283A29DF00F418B9 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		033BD0E4283A2ADB00F418B9 /* LookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookViewController.swift; sourceTree = "<group>"; };
-		033BD0EF284234D600F418B9 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		033BD1AC28431BBE00F418B9 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,7 +151,6 @@
 		033BD0EE2842348E00F418B9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				033BD0EF284234D600F418B9 /* Plan.swift */,
 				033BD1AC28431BBE00F418B9 /* Project.swift */,
 			);
 			path = Models;
@@ -299,7 +296,6 @@
 			files = (
 				033BD0E3283A29DF00F418B9 /* EditViewController.swift in Sources */,
 				033BD0B7283A256000F418B9 /* ViewController.swift in Sources */,
-				033BD0F0284234D600F418B9 /* Plan.swift in Sources */,
 				033BD0B3283A256000F418B9 /* AppDelegate.swift in Sources */,
 				033BD0E5283A2ADB00F418B9 /* LookViewController.swift in Sources */,
 				033BD1AD28431BBE00F418B9 /* Project.swift in Sources */,

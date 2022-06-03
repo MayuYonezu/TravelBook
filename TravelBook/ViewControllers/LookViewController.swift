@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class LookViewController: UIViewController {
+    
+    let realm = try! Realm()
+    var projects = [Project]()
+    var plans = [Plan]()
     
     // ミッション表示
     @IBOutlet var missionLabel: UILabel!
@@ -15,6 +20,8 @@ class LookViewController: UIViewController {
     @IBOutlet var startLabel: UILabel!
     // 終わる日にちを表示
     @IBOutlet var finishLabel: UILabel!
+    //スケジュールを表示させるためのTebleView
+    @IBOutlet var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +35,11 @@ class LookViewController: UIViewController {
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
         
-        print(Project())
+        print("LookViewControllerへ画面遷移しました")
+        getProjectData()
+        getPlanData()
+        print(projects[1])
+        print(plans)
 
         // Do any additional setup after loading the view.
     }
@@ -37,15 +48,12 @@ class LookViewController: UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func getProjectData() {
+        projects = Array(realm.objects(Project.self)).reversed()  // Realm DBから保存されてるプランを全取得
     }
-    */
-
+    
+    func getPlanData() {
+        plans = Array(realm.objects(Plan.self)).reversed()
+    }
+    
 }

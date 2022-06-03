@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class EditViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class EditViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     //パーツ宣言---------------------------------------------
     // CVで企画選択時のボタンの背景画像
@@ -28,7 +28,7 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     // ミッションを違うものに変更するためのButton
     @IBOutlet var missionUpdateBtn: UIButton!
     //Section選択するためのPicker
-    @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet var SectionTextField: UITextField!
     // 予定の詳細を書くためTextField
     @IBOutlet var detailTextFiled: UITextField!
     // 予定の始まる時間
@@ -45,26 +45,24 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     //ミッション-------------------------------------------
     // ミッションが入ったArray
     let missionArray = ["映えな写真を撮る","おしゃれなVlogを撮る","ストーリーを1日10個載せる","YouTuber風な動画を撮って編集","面白写真を撮る"]
-    // pickerViewの要素（仮で1~7日までにする->もし可能であれば必要な日程数のみにする）
-    let DaysArray = ["1","2","3","4","5","6","7"]
+
     
     //Realm-----------------------------------------------
     let realm = try! Realm()
     var plans = [Plan]()
+    var project = [Project]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Navigation装飾
         navigation()
         
+        //SaveButton
         saveButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonPressed(_:)))
         self.navigationItem.rightBarButtonItem = saveButtonItem
+        
         // 一番初めに表示されるmission
         mission_random()
-        
-        // Delegate設定
-        pickerView.delegate = self
-        pickerView.dataSource = self
         
         // TableViewの初期設定
         tableView.delegate = self
@@ -81,9 +79,10 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         FinishTimeTextField.placeholder = "End"
         
         // realm初期化
-        try! realm.write {
-            realm.deleteAll()
-        }
+        //try! realm.write {
+        //    realm.deleteAll()
+        //}
+        
         StartDaysTextField.delegate = self
         FinishDaysTextField.delegate = self
         StartTimeTextField.delegate = self
@@ -99,7 +98,7 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     
     
     
-    //UIDatePickerをインスタンス化（同じこと2回書いてるから後で一つにまとめる）
+    //UIDatePickerをインスタンス化（同じこと書いてるから後でまとめる）
     let timePicker: UIDatePicker = {
         let dp = UIDatePicker()
         dp.datePickerMode = UIDatePicker.Mode.time
@@ -173,46 +172,7 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         }
     
     
-    @objc func saveButtonPressed(_ sender: UIBarButtonItem){
-        
-        guard let _ = titleName.text,
-        let _ = StartDaysTextField.text,
-        let _ = FinishDaysTextField.text,
-        let _ = missionLabel.text else {return}
-        
-        saveProject()
-        
-        // detailTextFieldを初期化する
-        titleName.text = ""
-        StartDaysTextField.text = ""
-        FinishDaysTextField.text = ""
-        missionLabel.text = ""
-        
-        print("プロジェクト保存")
-        print(Project())
-        
-        
-    }
     
-    // 企画を保存
-    func saveProject(){
-        guard let titleText = titleName.text,
-        let startDayText = StartDaysTextField.text,
-        let finishDayText = FinishDaysTextField.text,
-        let missionText = missionLabel.text else { return }
-        
-        let project = Project()
-        project.title = titleText
-        project.startDays = startDayText
-        project.finishDays = finishDayText
-        project.mission = missionText
-        
-        try! realm.write({
-            realm.add(project) // レコードを追加
-        })
-        print(project)
-
-    }
     
     
     // NavigationBar装飾
@@ -231,6 +191,11 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         getPlanData()
         
     }
+    
+    
+    
+    
+    
     
     // アルバムを開くためのアクション
     @IBAction func onTappedAlbumBtn(){
@@ -254,6 +219,10 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         titeImage.image = info[.originalImage] as? UIImage
     }
     
+    
+    
+    
+    
     // Missionを更新するためのアクション
     @IBAction func mission_update(){
         mission_random()
@@ -267,25 +236,52 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         missionLabel.text = randomMission
     }
     
-    // DayPickerの列の数
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+    
+    
+    
+    
+    
+    // 企画保存
+    @objc func saveButtonPressed(_ sender: UIBarButtonItem){
+        
+        guard let _ = titleName.text,
+        let _ = StartDaysTextField.text,
+        let _ = FinishDaysTextField.text,
+        let _ = missionLabel.text else {return}
+        
+        saveProject()
+        
+        // detailTextFieldを初期化する
+        //titleName.text = ""
+        //StartDaysTextField.text = ""
+        //FinishDaysTextField.text = ""
+        //missionLabel.text = ""
+        
+        print("プロジェクト保存")
+        
+        performSegue(withIdentifier: "goNext", sender: nil)
+        
     }
     
-    // UIPickerViewの行数、リストの数
-    func pickerView(_ pickerView: UIPickerView,numberOfRowsInComponent component: Int) -> Int {
-        return DaysArray.count
+    // 企画を保存
+    func saveProject(){
+        guard let titleText = titleName.text,
+        let startDayText = StartDaysTextField.text,
+        let finishDayText = FinishDaysTextField.text,
+        let missionText = missionLabel.text else { return }
+        
+        let project = Project()
+        project.title = titleText
+        project.startDays = startDayText
+        project.finishDays = finishDayText
+        project.mission = missionText
+        
+        try! realm.write({
+            realm.add(project) // レコードを追加
+        })
+        print(project)
+
     }
-    
-    // UIPickerViewの最初の表示
-    func pickerView(_ pickerView: UIPickerView,titleForRow row: Int,forComponent component: Int) -> String? {
-            return DaysArray[row]
-        }
-    
-    // UIPickerViewのRowが選択された時の挙動
-    func pickerView(_ pickerView: UIPickerView,didSelectRow row: Int,inComponent component: Int) {
-            //label.text = dataList[row]
-        }
     
     // "予定を追加"をタップされたとき
     @IBAction func addBtn(){
