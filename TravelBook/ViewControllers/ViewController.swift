@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ViewController: UIViewController {
     
@@ -14,6 +15,9 @@ class ViewController: UIViewController {
     
     // 新規プロジェクト作成Btn
     @IBOutlet var NewProjectBtn: UIButton!
+    let realm = try! Realm()
+    var plans = [Plan]()
+    var project = [Project]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +29,7 @@ class ViewController: UIViewController {
         appearance.backgroundColor = pink
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "GuidBook"
+        navigationItem.title = "MissionTravel"
         
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance

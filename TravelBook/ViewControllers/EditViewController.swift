@@ -42,6 +42,7 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
     
     var saveButtonItem: UIBarButtonItem!
     
+    
     //ミッション-------------------------------------------
     // ミッションが入ったArray
     let missionArray = ["映えな写真を撮る","おしゃれなVlogを撮る","ストーリーを1日10個載せる","YouTuber風な動画を撮って編集","面白写真を撮る"]
@@ -78,10 +79,10 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         StartTimeTextField.placeholder = "Start"
         FinishTimeTextField.placeholder = "End"
         
-        // realm初期化
-        //try! realm.write {
-        //    realm.deleteAll()
-        //}
+         //realm初期化
+//        try! realm.write {
+//            realm.deleteAll()
+//        }
         
         StartDaysTextField.delegate = self
         FinishDaysTextField.delegate = self
@@ -279,6 +280,12 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         try! realm.write({
             realm.add(project) // レコードを追加
         })
+        
+        try! realm.write(){
+            for plan in plans {
+                project.plans.append(plan)
+            }
+        }
         print(project)
 
     }
@@ -310,17 +317,28 @@ class EditViewController: UIViewController, UITextFieldDelegate, UINavigationCon
         plan.startTime = startText
         plan.finishTime = finishText
         
-        try! realm.write({
-            realm.add(plan) // レコードを追加
-        })
-        print(plan)
-
+//        try! realm.write({
+//            realm.add(plan) // レコードを追加
+//        })
+//        print(plan)
+        
+        //projectsの中にplanのデータ全てを入れ込んだ
+//        let projects = realm.objects(Project.self)
+//        let project = projects.last
+//        let plans = project!.plans
+//        try! realm.write({
+//            projects.last?.plans.append(plan)
+//        })
+        
+        plans.append(plan)
+        print("aaa")
     }
     
     // Realmからデータを取得してテーブルビューを再リロードするメソッド
     func getPlanData() {
-        plans = Array(realm.objects(Plan.self)).reversed()  // Realm DBから保存されてる予定を全取得
         tableView.reloadData() // テーブルビューをリロード
+        plans = Array(realm.objects(Plan.self)).reversed()  // Realm DBから保存されてる予定を全取得
+        
     }
     // 初日から最終日までの期間を計算させる
     //その期間をDayPickerに表示させる

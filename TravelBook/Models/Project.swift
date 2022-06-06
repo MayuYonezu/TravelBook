@@ -16,6 +16,9 @@ class Project: Object {
     @objc dynamic var title: String = ""
     @objc dynamic var mission: String = ""
     let plans = List<Plan> ()
+    override static func primaryKey() -> String? {
+            return "startDays"
+    }
 }
 
 class Plan: Object {
@@ -24,5 +27,8 @@ class Plan: Object {
     @objc dynamic var startTime: String = ""
     @objc dynamic var finishTime: String = ""
     let parentCategory = LinkingObjects(fromType: Project.self, property: "plans")
+//    override static func primaryKey() -> String? {
+//            return "planDay"
+//    }
 }
 
